@@ -1,5 +1,4 @@
 云编译7981固件
-（p3terx 2024新版 基于 Ubuntu22.04）
 
 237大佬源码网址:
 [https://github.com/padavanonly/immortalwrt-mt798x-24.10](https://github.com/padavanonly/immortalwrt-mt798x-24.10)
