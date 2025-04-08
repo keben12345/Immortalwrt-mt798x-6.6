@@ -78,7 +78,7 @@ jobs:
          
     - name: Load custom configuration
       run: |
-        [ -e files ] && mv files openwrt/files
+        [ -e files ] && mv files ImmortalWrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE ImmortalWrt/.config
         chmod +x $DIY_P2_SH
         cd ImmortalWrt
