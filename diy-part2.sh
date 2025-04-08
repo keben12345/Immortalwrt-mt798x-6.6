@@ -14,11 +14,6 @@
 rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 23.x feeds/packages/lang/golang
 
-# Add OpenClash
-git clone --depth 1 https://github.com/vernesong/openclash.git OpenClash
-rm -rf feeds/luci/applications/luci-app-openclash
-mv OpenClash/luci-app-openclash feeds/luci/applications/luci-app-openclash
-
 # Modify Hostname
 sed -i "s/hostname='.*'/hostname='WR30U'/g" package/base-files/files/bin/config_generate
 
