@@ -10,91 +10,30 @@
 # Description: OpenWrt DIY script part 2 (After Update feeds)
 #
 
-# 移除 openwrt feeds 自带的核心包
-rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
-git clone https://github.com/sbwml/openwrt_helloworld package/helloworld
-
-# 更新 golang 1.23 版本
+# Update golang 1.23
 rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 23.x feeds/packages/lang/golang
 
-# 替换 Passwall 软件
-rm -rf feeds/luci/applications/luci-app-passwall/*
-git clone -b main --single-branch https://github.com/xiaorouji/openwrt-passwall passwall
-mv passwall/luci-app-passwall/* feeds/luci/applications/luci-app-passwall/
-rm -rf passwall
-
-# 添加 Passwall2 软件
-# rm -rf feeds/luci/applications/luci-app-passwall2
-mkdir feeds/luci/applications/luci-app-passwall2
-git clone -b main --single-branch https://github.com/xiaorouji/openwrt-passwall2 passwall2
-mv passwall2/luci-app-passwall2/* feeds/luci/applications/luci-app-passwall2/
-rm -rf passwall2
-
-# 修改 Passwall 检测规则
-sed -i 's/socket" "iptables-mod-//g' feeds/luci/applications/luci-app-passwall/root/usr/share/passwall/app.sh
-
-# 修改 Passwall2 检测规则
-sed -i 's/socket" "iptables-mod-//g' feeds/luci/applications/luci-app-passwall2/root/usr/share/passwall2/app.sh
-
-# 添加 OpenClash 软件
+# Add OpenClash
 git clone --depth 1 https://github.com/vernesong/openclash.git OpenClash
 rm -rf feeds/luci/applications/luci-app-openclash
 mv OpenClash/luci-app-openclash feeds/luci/applications/luci-app-openclash
 
-# Remove v2ray-geodata package from feeds (openwrt-22.03 & master)
-rm -rfv feeds/packages/net/v2ray-geodata
-git clone https://github.com/Ljzkirito/v2ray-geodata feeds/packages/net/v2ray-geodata
-rm -rfv feeds/packages/net/mosdns
-find ./ | grep Makefile | grep luci-app-mosdns | xargs rm -fv
-git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
-
-# 替换 Smartdns
-./scripts/feeds uninstall luci-app-smartdns smartdns
-./scripts/feeds install -a -p customsd
-
-# 替换 luci-app-ssr-plus & Depends
-Replace_package="xray-core xray-plugin v2ray-core v2ray-plugin hysteria ipt2socks microsocks redsocks2 chinadns-ng dns2socks dns2tcp naiveproxy simple-obfs tcping tuic-client luci-app-ssr-plus"
-./scripts/feeds uninstall ${Replace_package}
-./scripts/feeds install -f -p helloworld ${Replace_package}
-
-# 替换 shadowsocks-rust
-rm -rfv feeds/packages/net/shadowsocks-rust
-git clone https://github.com/Ljzkirito/shadowsocks-rust feeds/packages/net/shadowsocks-rust
-
-# 替换 adguardhome
-rm -rfv feeds/packages/net/adguardhome
-git clone https://github.com/Ljzkirito/adguardhome-openwrt feeds/packages/net/adguardhome
-
-# 修改 Hostname
+# Modify Hostname
 sed -i "s/hostname='.*'/hostname='WR30U'/g" package/base-files/files/bin/config_generate
 
-# 修改登录 IP
+# Modify login IP
 sed -i 's/192.168.1.1/192.168.5.1/g' package/base-files/files/bin/config_generate
 
-# 修改默认 SSID
+# Modify default SSID
 sed -i "s/ImmortalWrt-2.4G/Breakwa11/g" package/mtk/applications/mtwifi-cfg/files/mtwifi.sh
 sed -i "s/ImmortalWrt-5G/Breakwa11 ax/g" package/mtk/applications/mtwifi-cfg/files/mtwifi.sh
 
+# Modify ppp-down, add sleep 3. my source code is change, no need this
+sed -i '$a\\sleep 3' package/network/services/ppp/files/lib/netifd/ppp-down
+
+# Insert two lines before the last line in 99-default-settings-chinese. For Modify opkg url, change mt7981 to filogic, del lines inlude passwall.
+sed -i '/^exit 0$/i sed -i "s,mt7981,filogic,g" "package/base-files/files/etc/opkg/distfeeds.conf"\nsed -i '\''/passwall/d'\'' "package/base-files/files/etc/opkg/distfeeds.conf"' package/emortal/default-settings/files/99-default-settings-chinese
+
 # ttyd 终端自动登录
 sed -i "s?/bin/login?/usr/libexec/login.sh?g" feeds/packages/utils/ttyd/files/ttyd.config
-
-#git clone --depth=1 -b master https://github.com/fw876/helloworld
-#Replace_package="xray-core xray-plugin v2ray-core v2ray-plugin hysteria ipt2socks microsocks redsocks2 chinadns-ng dns2socks dns2tcp naiveproxy simple-obfs tcping tuic-client"
-#for a in ${Replace_package}
-#do
-#	echo "Replace_package=$a"
-# 	rm -rfv feeds/packages/net/"$a"
-#	cp -rv helloworld/"$a" feeds/packages/net
-#done
-# sed -i 's/ +libopenssl-legacy//g' feeds/packages/net/shadowsocksr-libev/Makefile
-#rm -rfv feeds/luci/applications/luci-app-ssr-plus
-#cp -rv helloworld/luci-app-ssr-plus feeds/luci/applications
-#cp -rv helloworld/shadow-tls package
-#rm -rfv helloworld
-# Remove upx commands
-#makefile_file="$({ find package|grep Makefile |sed "/Makefile./d"; } 2>"/dev/null")"
-#for a in ${makefile_file}
-#do
-#	[ -n "$(grep "upx" "$a")" ] && sed -i "/upx/d" "$a"
-#done
