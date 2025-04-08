@@ -6,7 +6,7 @@
 #
 # https://github.com/P3TERX/Actions-OpenWrt
 # Description: Build OpenWrt using GitHub Actions
-# 硬盘释放来自于https://github.com/klttr/ActionsBuildOpenWRT
+# 
 
 name: Build mt7981
 
