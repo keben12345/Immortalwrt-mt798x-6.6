@@ -52,8 +52,8 @@ jobs:
       working-directory: /workdir
       run: |
         df -hT $PWD
-        git clone $REPO_URL -b $REPO_BRANCH openwrt
-        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        git clone $REPO_URL -b $REPO_BRANCH ImmortalWrt
+        ln -sf /workdir/ImmortalWrt $GITHUB_WORKSPACE/ImmortalWrt
 
     - name: Load custom feeds
       run: |
@@ -64,7 +64,7 @@ jobs:
 
     - name: Update feeds
       run: |
-         cd openwrt
+         cd ImmortalWrt
          ./scripts/feeds update -a
          rm -rf feeds/packages/lang/golang
          git clone https://github.com/kenzok8/golang feeds/packages/lang/golang
@@ -72,22 +72,22 @@ jobs:
 
     - name: Install feeds
       run: |
-        cd openwrt
+        cd ImmortalWrt
         ./scripts/feeds install -a 
         
          
     - name: Load custom configuration
       run: |
         [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE ImmortalWrt/.config
         chmod +x $DIY_P2_SH
-        cd openwrt
+        cd ImmortalWrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
     - name: Download package
       id: package
       run: |
-        cd openwrt
+        cd ImmortalWrt
         make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
@@ -96,7 +96,7 @@ jobs:
     - name: Compile the firmware
       id: compile
       run: |
-        cd openwrt
+        cd ImmortalWrt
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 || make -j1 V=s
         echo "status=success" >> $GITHUB_OUTPUT
@@ -138,7 +138,7 @@ jobs:
       run: |
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         touch release.txt
-        echo "## hanwckf's ImmortalWrt mt7981 Release $(date +"%Y.%m.%d-%H:%M")" >> release.txt
+        echo "## padavanonly's ImmortalWrt mt7981 Release $(date +"%Y.%m.%d-%H:%M")" >> release.txt
         echo "- factory.bin" >> release.txt
         echo "  WR30U-112m-md5: $(md5sum ${{ env.FIRMWARE }}/*112m*factory.bin | cut -d" " -f1)" >> release.txt
         echo "- squashfs-sysupgrade.bin" >> release.txt
