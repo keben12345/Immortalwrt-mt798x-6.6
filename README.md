@@ -1,6 +1,6 @@
-云编译7981固件
+云编译小米 WR30U/WR30T 固件
 
-237大佬源码网址:
+237 大佬源码网址:
 [https://github.com/padavanonly/immortalwrt-mt798x-24.10](https://github.com/padavanonly/immortalwrt-mt798x-24.10)
 
 使用p3terx云编译模板
