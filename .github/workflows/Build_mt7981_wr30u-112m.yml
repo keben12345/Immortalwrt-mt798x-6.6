@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 # 硬盘释放来自于https://github.com/klttr/ActionsBuildOpenWRT
 
-name: Build mt7981 wr30u-112m
+name: Build MT7981 WR30U-112m
 
 on:
   repository_dispatch:
