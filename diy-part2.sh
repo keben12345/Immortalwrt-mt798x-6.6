@@ -10,13 +10,6 @@
 # Description: OpenWrt DIY script part 2 (After Update feeds)
 #
 
-# Modify login IP
-sed -i 's/192.168.1.1/192.168.5.1/g' package/base-files/files/bin/config_generate
-
-# Modify default SSID
-sed -i "s/ImmortalWrt-2.4G/Breakwa11/g" package/mtk/applications/mtwifi-cfg/files/mtwifi.sh
-sed -i "s/ImmortalWrt-5G/Breakwa11 ax/g" package/mtk/applications/mtwifi-cfg/files/mtwifi.sh
-
 # Modify ppp-down, add sleep 3. my source code is change, no need this
 sed -i '$a\\sleep 3' package/network/services/ppp/files/lib/netifd/ppp-down
 
