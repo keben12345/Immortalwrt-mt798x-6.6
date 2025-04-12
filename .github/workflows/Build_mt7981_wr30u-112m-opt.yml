@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build mt7981 wr30u-112m
+name: Build mt7981 wr30u-112m-opt
 
 on:
   repository_dispatch:
