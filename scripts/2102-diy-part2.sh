@@ -62,12 +62,8 @@ Replace_package="xray-core xray-plugin v2ray-core v2ray-plugin hysteria ipt2sock
 rm -rfv feeds/packages/net/shadowsocks-rust
 git clone https://github.com/Ljzkirito/shadowsocks-rust feeds/packages/net/shadowsocks-rust
 
-# 替换 adguardhome
-rm -rfv feeds/packages/net/adguardhome
-git clone https://github.com/Ljzkirito/adguardhome-openwrt feeds/packages/net/adguardhome
-
 # 修改登录 IP
-sed -i 's/192.168.1.1/192.168.5.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.6.1/g' package/base-files/files/bin/config_generate
 
 # 修改默认 SSID
 sed -i "s/ImmortalWrt-2.4G/Breakwa11/g" package/mtk/applications/mtwifi-cfg/files/mtwifi.sh
