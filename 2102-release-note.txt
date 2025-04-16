@@ -1,0 +1,4 @@
+hanwckf 大佬 [21.02](https://github.com/hanwckf/immortalwrt-mt798x)  源码编译小米 WR30U/WR30T 路由器固件
+Immortalwrt 21.02（闭源MTK驱动）主路由版
+含 OpenClash 模块
+默认IP地址：192.168.6.1
