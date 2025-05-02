@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build 2410 wr30u-passwall
+name: Build 2410 WR30u with PassWall
 
 on:
   repository_dispatch:
