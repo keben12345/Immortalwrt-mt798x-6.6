@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build 2410 wr30u-112m+openclash
+name: Build 2410 wr30u-openclash
 
 on:
   repository_dispatch:
